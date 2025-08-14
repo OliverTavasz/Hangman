@@ -10,41 +10,42 @@ namespace Hangman
 {
     public class HangmanGame
     {
-        private static string[] Words = ["bomber",
-                  "cooperative",
-                  "thesis",
-                  "move",
-                  "figure",
-                  "zone",
-                  "gesture",
-                  "research",
-                  "compartment",
-                  "guerrilla",
+        // allow only words in lower case
+        private static readonly string[] Words = ["bomber",
+                                                  "cooperative",
+                                                  "thesis",
+                                                  "move",
+                                                  "figure",
+                                                  "zone",
+                                                  "gesture",
+                                                  "research",
+                                                  "compartment",
+                                                  "guerrilla",
         ];
-        private static string[] HangmanGraphic = ["       \n       \n       \n       \n       \n       \n       \n",
-                    "       \n|      \n|      \n|      \n|      \n|      \n|      \n",
-                    "       \n|/     \n|      \n|      \n|      \n|      \n|      \n",
-                    "______ \n|/     \n|      \n|      \n|      \n|      \n|      \n",
-                    "______ \n|/   | \n|      \n|      \n|      \n|      \n|      \n",
-                    "______ \n|/   | \n|    O \n|      \n|      \n|      \n|      \n",
-                    "______ \n|/   | \n|    O \n|    | \n|    | \n|      \n|      \n",
-                    "______ \n|/   | \n|    O \n|   /| \n|    | \n|      \n|      \n",
-                    "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|      \n|      \n",
-                    "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   /  \n|      \n",
-                    "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   / \\\n|      \n",
+        private static readonly string[] HangmanGraphic = ["       \n       \n       \n       \n       \n       \n       \n",
+                                                           "       \n|      \n|      \n|      \n|      \n|      \n|      \n",
+                                                           "       \n|/     \n|      \n|      \n|      \n|      \n|      \n",
+                                                           "______ \n|/     \n|      \n|      \n|      \n|      \n|      \n",
+                                                           "______ \n|/   | \n|      \n|      \n|      \n|      \n|      \n",
+                                                           "______ \n|/   | \n|    O \n|      \n|      \n|      \n|      \n",
+                                                           "______ \n|/   | \n|    O \n|    | \n|    | \n|      \n|      \n",
+                                                           "______ \n|/   | \n|    O \n|   /| \n|    | \n|      \n|      \n",
+                                                           "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|      \n|      \n",
+                                                           "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   /  \n|      \n",
+                                                           "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   / \\\n|      \n",
         ];
 
         private bool Running;
         private readonly string Word;
         private readonly char[] Wordprogress;
-        private readonly List<string> Guesses = new List<string>();
+        private readonly List<string> Guesses = [];
         private int Progress;
         private bool Win = false;
         public HangmanGame() 
         {
             Running = true;
             Word = Words[new Random().Next(0, 10)];
-            Wordprogress = new char[Word.Length];
+            Wordprogress = [.. Enumerable.Repeat('_', Word.Length)];
             for(int i = 0; i < Wordprogress.Length; i++)
             {
                 Wordprogress[i] = '_';
@@ -53,7 +54,8 @@ namespace Hangman
         }
         public void Run()
         {
-            //Console.WriteLine("Welcome to hangman!\nEnter your first guess:\n");
+            Console.WriteLine("Welcome to hangman!\nPress enter to begin\n");
+            Console.ReadLine();
             while (Running && !Win)
             {
                 Draw();
@@ -62,7 +64,6 @@ namespace Hangman
                 {
                     Progress++;
                 }
-                    
                 if (Progress >= HangmanGraphic.Length - 1)
                 {
                     Running = false;
@@ -72,7 +73,6 @@ namespace Hangman
             Draw();
             Console.WriteLine("You " + (Win ? "won" : "lost") + "! The word was '" + Word + "'");
             Console.ReadLine();
-            Console.Clear();
         }
 
         private void Draw()
@@ -85,21 +85,21 @@ namespace Hangman
             }
             Console.WriteLine("Guess the word:\n" + wp + "\n");
             Console.WriteLine(HangmanGraphic[Progress]);
+            string guesses = "";
             if (Guesses.Count != 0)
             {
-                Console.WriteLine("\n\nGuesses:");
-                string guesses = "";
+                Console.WriteLine("\nGuesses:");
                 for (int i = 0; i < Guesses.Count; i++)
                 {
                     guesses += Guesses[i] + ", ";
                 }
-                Console.Write(guesses + "\n\n> ");
             }
+            Console.Write(guesses + "\n\n> ");
         }
         /// <summary>
         /// </summary>
         /// <param name="input">User input</param>
-        /// <returns>True if user's guess was correct.</returns>
+        /// <returns>True if user's guess was correct and has not already been guessed.</returns>
         private bool HandleInput(string input)
         {
             if (input.Length == 1)
