@@ -27,10 +27,6 @@
             string[] words = File.ReadAllLines("Words.txt");
             Word = words[new Random().Next(0, words.Length)].ToLower();
             Wordprogress = [.. Enumerable.Repeat('_', Word.Length)];
-            for(int i = 0; i < Wordprogress.Length; i++)
-            {
-                Wordprogress[i] = '_';
-            }
             Progress = 0;
         }
         public void Run()
