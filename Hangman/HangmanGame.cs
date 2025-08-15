@@ -48,7 +48,7 @@
                         break;
                 }
                 Draw();
-                Console.WriteLine("You " + (Win ? "won" : "lost") + "! The word was '" + Word + "'");
+                Console.WriteLine("\n\nYou " + (Win ? "won" : "lost") + "! The word was '" + Word + "'");
                 Console.WriteLine("Enter 'q' to quit or nothing to play again");
                 if (Console.ReadLine() == "q")
                     break;
