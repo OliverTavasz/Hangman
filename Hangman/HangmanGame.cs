@@ -1,27 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hangman
+﻿namespace Hangman
 {
     public class HangmanGame
     {
-        // allow only words in lower case
-        private static readonly string[] Words = ["bomber",
-                                                  "cooperative",
-                                                  "thesis",
-                                                  "move",
-                                                  "figure",
-                                                  "zone",
-                                                  "gesture",
-                                                  "research",
-                                                  "compartment",
-                                                  "guerrilla",
-        ];
         private static readonly string[] HangmanGraphic = ["       \n       \n       \n       \n       \n       \n       \n",
                                                            "       \n|      \n|      \n|      \n|      \n|      \n|      \n",
                                                            "       \n|/     \n|      \n|      \n|      \n|      \n|      \n",
@@ -44,7 +24,8 @@ namespace Hangman
         public HangmanGame() 
         {
             Running = true;
-            Word = Words[new Random().Next(0, 10)];
+            string[] words = File.ReadAllLines("Words.txt");
+            Word = words[new Random().Next(0, words.Length)].ToLower();
             Wordprogress = [.. Enumerable.Repeat('_', Word.Length)];
             for(int i = 0; i < Wordprogress.Length; i++)
             {
