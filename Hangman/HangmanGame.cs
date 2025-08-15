@@ -85,7 +85,7 @@
         {
             if (input.Length == 1)
             {
-                if (Word.Contains(input) && !Wordprogress.Contains(input[0]))
+                if (Word.Contains(input))
                 {
                     for (int i = 0; i < Word.Length; i++)
                     {
