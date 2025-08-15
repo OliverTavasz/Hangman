@@ -14,20 +14,17 @@
                                                            "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   /  \n|      \n",
                                                            "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   / \\\n|      \n",
         ];
-
-        private bool Running;
+        private bool Running = true;
+        private bool Win = false;
+        private int Progress = 0;
+        private readonly List<string> Guesses = [];
         private readonly string Word;
         private readonly char[] Wordprogress;
-        private readonly List<string> Guesses = [];
-        private int Progress;
-        private bool Win = false;
         public HangmanGame() 
         {
-            Running = true;
             string[] words = File.ReadAllLines("Words.txt");
             Word = words[new Random().Next(0, words.Length)].ToLower();
             Wordprogress = [.. Enumerable.Repeat('_', Word.Length)];
-            Progress = 0;
         }
         public void Run()
         {
