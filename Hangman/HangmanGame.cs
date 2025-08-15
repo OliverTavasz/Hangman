@@ -103,10 +103,13 @@
                     Guesses.Add(input);
                     return false;
                 }
+                else
+                    return true;
             }
             else if (input == Word)
             {
                 Win = true;
+                Wordprogress = [.. Word];
                 return true;
             }
             return false;
