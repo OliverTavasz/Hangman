@@ -14,39 +14,46 @@
                                                            "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   /  \n|      \n",
                                                            "______ \n|/   | \n|    O \n|   /|\\\n|    | \n|   / \\\n|      \n",
         ];
-        private bool Running = true;
-        private bool Win = false;
-        private int Progress = 0;
-        private readonly List<string> Guesses = [];
-        private readonly string Word;
-        private readonly char[] Wordprogress;
+        private bool Win;
+        private int Progress;
+        private List<string> Guesses;
+        private string Word;
+        private char[] Wordprogress;
         public HangmanGame() 
+        {
+            Reload();
+        }
+        private void Reload()
         {
             string[] words = File.ReadAllLines("Words.txt");
             Word = words[new Random().Next(0, words.Length)].ToLower();
             Wordprogress = [.. Enumerable.Repeat('_', Word.Length)];
+            Progress = 0;
+            Win = false;
+            Guesses = [];
         }
         public void Run()
         {
             Console.WriteLine("Welcome to hangman!\nPress enter to begin\n");
             Console.ReadLine();
-            while (Running && !Win)
+            while (true)
             {
+                while (!Win)
+                {
+                    Draw();
+                    string input = Console.ReadLine() ?? "";
+                    if (!HandleInput(input.ToLower()))
+                        Progress++;
+                    if (Progress >= HangmanGraphic.Length - 1)
+                        break;
+                }
                 Draw();
-                string input = Console.ReadLine() ?? "";
-                if (!HandleInput(input.ToLower()))
-                {
-                    Progress++;
-                }
-                if (Progress >= HangmanGraphic.Length - 1)
-                {
-                    Running = false;
-                    Win = false;
-                }
+                Console.WriteLine("You " + (Win ? "won" : "lost") + "! The word was '" + Word + "'");
+                Console.WriteLine("Enter 'q' to quit or nothing to play again");
+                if (Console.ReadLine() == "q")
+                    break;
+                Reload();
             }
-            Draw();
-            Console.WriteLine("You " + (Win ? "won" : "lost") + "! The word was '" + Word + "'");
-            Console.ReadLine();
         }
 
         private void Draw()
